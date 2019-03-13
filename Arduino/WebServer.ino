@@ -63,7 +63,6 @@ void setup() {
   display.display();
   WiFi.softAP(ssid, password);
   server.on("/", handleRoot);
-
   server.begin();
   dTime = millis();
 }
