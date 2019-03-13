@@ -1,0 +1,38 @@
+#include <WiFi.h>
+#include <WebServer.h>
+
+
+const char* ssid = "signalkass";
+const char* password = "12345678";
+
+WebServer server(80);
+
+const int led = 13;
+
+void handleRoot() {
+  digitalWrite(led, 1);
+  server.send(200, "text/plain", "hello from esp32!");
+  digitalWrite(led, 0);
+}
+
+void setup() {
+  pinMode(led, OUTPUT);
+  Serial.begin(115200);
+  WiFi.softAP(ssid, password);
+  Serial.println("Webserver started:");
+  Serial.print("SSID: ");
+  Serial.print(ssid);
+  Serial.print("    PASSWORD: ");
+  Serial.println(password);
+  Serial.print("IP: "); 
+  Serial.println(WiFi.softAPIP());
+
+
+  server.on("/", handleRoot);
+
+  server.begin();
+}
+
+void loop() {
+  server.handleClient();
+}
