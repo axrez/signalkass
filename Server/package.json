@@ -2,9 +2,23 @@
   "name": "Signalkass",
   "version": "1.0.0",
   "description": "",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chart.js": "^2.8.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.19",
+    "next": "^8.0.3",
+    "react": "^16.8.6",
+    "react-chartjs": "^1.2.0",
+    "react-chartjs-2": "^2.7.6",
+    "react-dom": "^16.8.6",
+    "recharts": "^1.5.0"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
   "keywords": [],
   "author": "",

@@ -7,8 +7,8 @@ const device = require("./routes/api/device");
 const app = express();
 
 // BodyParser middelware
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ limit: '50mb' ,extended: true }))
+app.use(bodyParser.json({ limit: '50mb', extended: true}))
 
 // mongoose middelware
 const db = require('./config/keys').mongoURI;

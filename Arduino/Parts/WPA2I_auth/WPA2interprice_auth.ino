@@ -1,10 +1,13 @@
 #include <WiFi.h> //Wifi library
 #include "esp_wpa2.h" //wpa2 library for connections to Enterprise networks
-#define EAP_ANONYMOUS_IDENTITY "emil497m@efif.dk"
-#define EAP_IDENTITY "emil497m@efif.dk"
-#define EAP_PASSWORD "password"
+
+#define EAP_ANONYMOUS_IDENTITY "ZBC-AND-14@efif.dk"
+#define EAP_IDENTITY "ZBC-AND-14@efif.dk"
+#define EAP_PASSWORD "Fri3Kulmule7"
+
 const char* ssid = "ZBC WiFi"; // Eduroam SSID
-const char* host = "google.com"; //external server domain for HTTP connection after authentification
+const char* host = "googlge.com"; //external server domain for HTTP connection after authentification
+
 int counter = 0;
 WiFiClient client;
 void setup() {
@@ -53,7 +56,7 @@ void loop() {
   Serial.print("Connecting to website: ");
   Serial.println(host);
   if (client.connect(host, 80)) {
-    String url = "/rele/rele1.txt";
+    String url = "/";
     client.print(String("GET ") + url + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "User-Agent: NodeMCU\r\n" + "Connection: close\r\n\r\n");
 
     while (client.connected()) {
