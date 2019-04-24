@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const MeasureMapSchema = new Schema ({
+const { Schema } = mongoose;
+
+const MeasureMapSchema = new Schema({
   created: {
-    type: Date
+    type: Date,
   },
   index: {
-    type: Number
-  }
-})
+    type: Number,
+  },
+});
 
 module.exports = MeasureMap = mongoose.model('measureMap', MeasureMapSchema);
-

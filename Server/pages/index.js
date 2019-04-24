@@ -1,21 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from 'react';
 
-import Graph from '../components/Graph'
-
-const GraphWrapper = styled.div`
-  max-width: 80vw;
-  height: 30vh;
-`
+import FetchData from '../components/FetchData';
 
 const Index = () => (
   <>
     <h1>Hello</h1>
-    <GraphWrapper>
-      <Graph />
-    </GraphWrapper>
+    <FetchData />
   </>
-)
+);
 
-export default Index
-
+export default Index;
