@@ -10,24 +10,34 @@ const GraphWrapper = styled.div`
   height: 30vh;
 `;
 
-const uri = '/api/client/map';
+const MapURI = '/api/client/map';
+const GraphURI = '/api/client';
 
 const FetchData = () => {
-  const [date, setDate] = useState(0);
+  const [date, setDate] = useState([]);
+  const [graph, setGraph] = useState([]);
   useEffect(() => {
     // fetch the data table
     const fetchnMap = async () => {
-      const { data: body } = await axios(uri);
+      const { data: body } = await axios.get(MapURI);
+      // Map it to an array of dates
       const tempDate = body.map(e => e.created);
       setDate(tempDate);
     };
 
+    const fetchGraph = async () => {
+      const { data } = await axios.get(GraphURI);
+      setGraph(data);
+    };
+
     fetchnMap().catch(err => console.log(err));
+    fetchGraph().catch(err => console.log(err));
   }, []);
+
   return (
     <>
       <GraphWrapper>
-        <Graph />
+        <Graph data={graph} />
       </GraphWrapper>
       <DataTabel data={date} />
     </>

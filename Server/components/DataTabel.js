@@ -1,19 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import MeasureEntry from './MeasureEntry';
 
 const DataTabel = ({ data }) => {
-  console.log(data);
-  if (typeof data === 'object') {
-    const dates = data.map(e => e.created);
-    console.log(dates);
-  }
+  const list = data.map((d, i) => <MeasureEntry key={i}>{d}</MeasureEntry>);
   return (
     <>
       <h4>table someday</h4>
-      <ul>test</ul>
+      <ul>{list}</ul>
     </>
   );
+};
+
+DataTabel.propTypes = {
+  data: PropTypes.array.isRequired,
 };
 
 export default DataTabel;

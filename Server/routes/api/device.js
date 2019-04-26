@@ -9,13 +9,11 @@ const MeasureMap = require('../../models/MeasurementMap');
 // @disc:   Let the osciloscope update the database
 // @access: Should be private but public for know
 router.post('/post', (req, res) => {
-  const array = JSON.parse(`[${req.body.data}]`);
-  console.log(array.constructor === Array);
-
-  const date = new Date();
+  const array = req.body.data.split(',').map(Number);
+  const date = Date.now();
 
   const newMeasure = new Measure({
-    data: req.body.data,
+    data: array,
     created: date,
   });
 

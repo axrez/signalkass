@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
-const MeasureSchema = new Schema ({
+const { Schema } = mongoose;
+
+const MeasureSchema = new Schema({
   data: {
-    type: Array
+    type: Array,
   },
   created: {
-    type: Date
+    type: Number,
   },
   index: {
-    type: Number
-  }
-})
+    type: Number,
+  },
+});
 
 module.exports = Measure = mongoose.model('measure', MeasureSchema);
-

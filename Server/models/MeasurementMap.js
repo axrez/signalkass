@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const MeasureMapSchema = new Schema({
   created: {
-    type: Date,
+    type: Number,
   },
   index: {
     type: Number,
