@@ -12,6 +12,7 @@ const GraphWrapper = styled.div`
 
 const MapURI = '/api/client/map';
 const GraphURI = '/api/client';
+const SpeceficURI = '/api/client/specefic';
 
 const FetchData = () => {
   const [date, setDate] = useState([]);
@@ -34,12 +35,19 @@ const FetchData = () => {
     fetchGraph().catch(err => console.log(err));
   }, []);
 
+  const fetchNew = async e => {
+    const dateNow = e.target.id;
+    const { data } = await axios.post(SpeceficURI, { created: dateNow });
+    const newGraph = data;
+    setGraph(newGraph);
+  };
+
   return (
     <>
       <GraphWrapper>
         <Graph data={graph} />
       </GraphWrapper>
-      <DataTabel data={date} />
+      <DataTabel data={date} click={fetchNew} />
     </>
   );
 };

@@ -30,7 +30,7 @@ const Graph = ({ data }) => {
         <XAxis tick={false} />
         <YAxis />
         {data.length > 100 ? null : <Tooltip />}
-        <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="uv" stroke="#23382b" />
       </LineChart>
     </ResponsiveContainer>
   );

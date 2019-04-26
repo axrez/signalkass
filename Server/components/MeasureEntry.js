@@ -1,10 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import styled, { css } from 'styled-components';
 
-const MeasureEntry = ({ children }) => <li>{children}</li>;
+export const MeasureEntry = styled.li`
+  background: #333;
+  list-style: none;
+  color: white;
+  padding: 1rem;
+  margin: 0.2rem;
+  width: fit-content;
 
-MeasureEntry.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  ${props =>
+    props.active &&
+    css`
+      background: #555;
+    `}
 
-export default MeasureEntry;
+  :hover {
+    background: #444;
+    cursor: pointer;
+  }
+`;
