@@ -1,25 +1,65 @@
-#define PARALLEL_0 32
+#include <SPI.h>
+#define led 22
+
+static const int spiClk = 800000; // 1kHz
+
+SPIClass * vspi = NULL;
 
 void setup() {
-  for(int i = 0; i < 1; i++) {
-    pinMode(PARALLEL_0 + i, INPUT);
-  }
+  vspi = new SPIClass(VSPI);
 
-  parallel_set_inputs(PARALLEL_0);
+  vspi->begin();
+
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(5, OUTPUT);
+
+  
 }
+
+
 
 void loop() {
-  parallel_read(PARALLEL_0);
+  Serial.println(collectData());
+  delay(10000);
 }
 
 
-void parallel_set_inputs(int pin) {
-  REG_WRITE(GPIO_ENABLE_WITC_REG, 0xFF << pin);
+String collectData() { 
+  String data = String();
+  vspi->beginTransaction(SPISettings(spiClk, MSBFIRST, SPI_MODE0));
+  //pull SS slow to prep other end for transfer
+  digitalWrite(5, LOW); 
+  int m = vspi->transfer16(1);
+  Serial.println(m);
+  for(int i = 0; i < 1000; i++) {
+    int n = vspi->transfer16(0);
+    data += n;
+    data += ", ";
+    delay(1);
+  }
+  //pull ss high to signify end of data transfer
+  digitalWrite(5, HIGH); 
+  vspi->endTransaction();
+  return(data);
 }
 
-uint8_t parallel_read(int pin) { 
-  uint32_t input = REG_READ(GPIO_IN_REG);
+void postReq() {
+  if(WiFi.status() == WL_CONNECTED)  {
+    HTTPClient http;
 
-  return (input >> pin);
+    http.begin("https://movia-demo.herokuapp.com/api/update");
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    int httpCode = http.POST("key=b6aacadbc34a9144d78f5e655eb97c08b14c1c6f58f1bf9e3733490631283f67&busid=2&c=25");
+
+    Serial.println(httpCode);
+    if(httpCode > 0) {
+      String payload = http.getString();
+        Serial.println(httpCode);
+      Serial.println(payload);
+    } else {
+      Serial.println("Error in req");
+    }
+    http.end();
+  }
 }
-

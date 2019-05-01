@@ -3,6 +3,7 @@
 #include <HTTPClient.h>
 #include <Wire.h>
 #include <SSD1306.h> 
+#include <SPI.h>
 
 #define EAP_ANONYMOUS_IDENTITY "ZBC-AND-14@efif.dk"
 #define EAP_IDENTITY "ZBC-AND-14@efif.dk"
@@ -14,8 +15,16 @@ SSD1306Wire display(0x3c, 21, 22, GEOMETRY_128_32);
 
 WiFiClient client;
 
+static const int spiClk = 800000; // 1kHz
+SPIClass * vspi = NULL;
+
 void setup() {
+  vspi = new SPIClass(VSPI);
   Serial.begin(115200);
+
+  pinMode(5, OUTPUT);
+
+  vspi->begin();
   display.init();
   display.setFont(ArialMT_Plain_16);
   String initStr = "Connecting to network";
@@ -54,16 +63,37 @@ void setup() {
 }
 
 void loop() {
-  postReq();
+  Serial.println(collectData());
+  delay(2000);
 }
 
-void postReq() {
+String collectData() { 
+  String data = String();
+  vspi->beginTransaction(SPISettings(spiClk, MSBFIRST, SPI_MODE0));
+  //pull SS slow to prep other end for transfer
+  digitalWrite(5, LOW); 
+  int m = vspi->transfer16(1);
+  Serial.println(m);
+  for(int i = 0; i < 1000; i++) {
+    int n = vspi->transfer16(0);
+    data += n;
+    data += ", ";
+    delay(1);
+  }
+  //pull ss high to signify end of data transfer
+  digitalWrite(5, HIGH); 
+  vspi->endTransaction();
+  return(data);
+}
+
+void postReq(String body) {
   if(WiFi.status() == WL_CONNECTED)  {
     HTTPClient http;
 
     http.begin("https://movia-demo.herokuapp.com/api/update");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    int httpCode = http.POST("key=b6aacadbc34a9144d78f5e655eb97c08b14c1c6f58f1bf9e3733490631283f67&busid=2&c=25");
+    body = "data=" + body;
+    int httpCode = http.POST(body);
 
     Serial.println(httpCode);
     if(httpCode > 0) {
@@ -74,8 +104,6 @@ void postReq() {
       Serial.println("Error in req");
     }
     http.end();
-
-    delay(10000);
   }
 }
 
