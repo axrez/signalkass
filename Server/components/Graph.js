@@ -11,7 +11,7 @@ import {
 } from 'recharts';
 
 const Graph = ({ data }) => {
-  // Check if the data exists and map it to a list of data objects
+  // Check if the data exists and map it to a list of data objects or return an empty array
   const list = data[0]
     ? data[0].data.map((d, i) => ({
         name: i,
@@ -30,7 +30,7 @@ const Graph = ({ data }) => {
         <XAxis tick={false} />
         <YAxis />
         {data.length > 100 ? null : <Tooltip />}
-        <Line type="monotone" dataKey="uv" stroke="#23382b" />
+        <Line type="monotone" dataKey="uv" stroke="#23382b" dot={false} />
       </LineChart>
     </ResponsiveContainer>
   );

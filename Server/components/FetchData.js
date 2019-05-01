@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
 
 import Graph from './Graph';
 import DataTabel from './DataTabel';
 
-const GraphWrapper = styled.div`
-  max-width: 80vw;
-  height: 30vh;
-`;
+import { GraphWrapper, ContentWrapper, TabelWrapper } from './styled';
 
 const MapURI = '/api/client/map';
 const GraphURI = '/api/client';
@@ -26,6 +22,7 @@ const FetchData = () => {
       setDate(tempDate);
     };
 
+    // Fetch the default view for the graph
     const fetchGraph = async () => {
       const { data } = await axios.get(GraphURI);
       setGraph(data);
@@ -36,6 +33,7 @@ const FetchData = () => {
   }, []);
 
   const fetchNew = async e => {
+    // Fetch a new dataset for the graph when the user selects it.
     const dateNow = e.target.id;
     const { data } = await axios.post(SpeceficURI, { created: dateNow });
     const newGraph = data;
@@ -43,12 +41,17 @@ const FetchData = () => {
   };
 
   return (
-    <>
+    <ContentWrapper>
+      <TabelWrapper>
+        <DataTabel data={date} click={fetchNew} />
+      </TabelWrapper>
       <GraphWrapper>
         <Graph data={graph} />
       </GraphWrapper>
-      <DataTabel data={date} click={fetchNew} />
-    </>
+      <GraphWrapper>
+        <Graph data={graph} />
+      </GraphWrapper>
+    </ContentWrapper>
   );
 };
 export default FetchData;
