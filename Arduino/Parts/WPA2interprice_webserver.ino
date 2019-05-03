@@ -23,6 +23,7 @@ void setup() {
   Serial.begin(115200);
 
   pinMode(5, OUTPUT);
+  pinMode(36, INPUT);
 
   vspi->begin();
   display.init();
@@ -56,14 +57,17 @@ void setup() {
   Serial.print("IP: ");
   Serial.println(WiFi.localIP());
 
-  display.drawString(0,0, "Hej");
+  display.drawString(0,0, "Connected");
   display.display();
 
   delay(500);
 }
 
 void loop() {
-  postReq(collectData());
+  updateStateDisplay(false);
+  // postReq(collectData());
+  delay(1000);
+  updateStateDisplay(true);
   delay(20000);
 }
 
@@ -107,3 +111,37 @@ void postReq(String body) {
   }
 }
 
+void updateBatteryDisplay() {
+  String msg = "U: ";
+  msg += (analogRead(36)/535.0 );
+  msg += " V";
+  Serial.println(msg);
+  display.drawString(0,16, msg);
+}
+
+void updateStateDisplay(bool completed) {
+  if (completed) {
+    display.clear();
+    display.drawString(0,0, "Success!");
+    updateBatteryDisplay();
+    display.display();
+  } else {
+    display.clear();
+    display.drawString(0,0, "Posting...");
+    updateBatteryDisplay();
+    display.display();
+  }
+}
+
+// void setup() {
+//   Serial.begin(115200);
+//   pinMode(4, INPUT);
+// }
+
+// void loop() {
+//   String msg = "U: ";
+//   msg += (analogRead(4)/535.0 );
+//   msg += " V";
+//   Serial.println(msg);
+//   delay(1000);
+// }
