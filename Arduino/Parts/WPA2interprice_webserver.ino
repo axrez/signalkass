@@ -65,8 +65,7 @@ void setup() {
 
 void loop() {
   updateStateDisplay(false);
-  // postReq(collectData());
-  delay(1000);
+  postReq(collectData());
   updateStateDisplay(true);
   delay(20000);
 }
@@ -115,7 +114,6 @@ void updateBatteryDisplay() {
   String msg = "U: ";
   msg += (analogRead(36)/535.0 );
   msg += " V";
-  Serial.println(msg);
   display.drawString(0,16, msg);
 }
 
@@ -132,16 +130,3 @@ void updateStateDisplay(bool completed) {
     display.display();
   }
 }
-
-// void setup() {
-//   Serial.begin(115200);
-//   pinMode(4, INPUT);
-// }
-
-// void loop() {
-//   String msg = "U: ";
-//   msg += (analogRead(4)/535.0 );
-//   msg += " V";
-//   Serial.println(msg);
-//   delay(1000);
-// }
