@@ -63,8 +63,8 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(collectData());
-  delay(2000);
+  postReq(collectData());
+  delay(20000);
 }
 
 String collectData() { 
@@ -90,7 +90,7 @@ void postReq(String body) {
   if(WiFi.status() == WL_CONNECTED)  {
     HTTPClient http;
 
-    http.begin("https://movia-demo.herokuapp.com/api/update");
+    http.begin("https://signalkass.herokuapp.com/api/device/post");
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     body = "data=" + body;
     int httpCode = http.POST(body);
