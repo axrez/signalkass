@@ -15,7 +15,7 @@ SSD1306Wire display(0x3c, 21, 22, GEOMETRY_128_32);
 
 WiFiClient client;
 
-static const int spiClk = 800000; // 1kHz
+static const int spiClk = 800000; // 800kHz
 SPIClass * vspi = NULL;
 
 void setup() {
@@ -28,6 +28,11 @@ void setup() {
   vspi->begin();
   display.init();
   display.setFont(ArialMT_Plain_16);
+  updateBatteryDisplay();
+  display.display();
+  
+  delay(1000);
+  display.clear();
   String initStr = "Connecting to network";
   Serial.println(ssid);
   display.drawString(0, 0, initStr);
@@ -64,10 +69,10 @@ void setup() {
 }
 
 void loop() {
+  delay(20000);
   updateStateDisplay(false);
   postReq(collectData());
   updateStateDisplay(true);
-  delay(20000);
 }
 
 String collectData() { 
@@ -77,7 +82,7 @@ String collectData() {
   digitalWrite(5, LOW); 
   int m = vspi->transfer16(1);
   Serial.println(m);
-  for(int i = 0; i < 1000; i++) {
+  for(int i = 0; i < 1024; i++) {
     int n = vspi->transfer16(0);
     data += n;
     data += ", ";
@@ -112,7 +117,7 @@ void postReq(String body) {
 
 void updateBatteryDisplay() {
   String msg = "U: ";
-  msg += (analogRead(36)/535.0 );
+  msg += (analogRead(36)/560.0 );
   msg += " V";
   display.drawString(0,16, msg);
 }

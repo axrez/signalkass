@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import Graph from './Graph';
 import DataTabel from './DataTabel';
-import DFT from './DFT';
+import FFT from './FFT';
 import extractData from '../utils/extractData';
 
 import { GraphWrapper, ContentWrapper, TabelWrapper } from './styled';
@@ -48,10 +48,10 @@ const FetchData = () => {
         <DataTabel data={date} click={fetchNew} />
       </TabelWrapper>
       <GraphWrapper>
-        <Graph data={graph} transform={false} />
+        <Graph data={graph.filter((d, i) => i < 100)} transform={false} />
       </GraphWrapper>
       <GraphWrapper>
-        <DFT data={graph} />
+        <FFT data={graph} />
       </GraphWrapper>
     </ContentWrapper>
   );
