@@ -7,7 +7,7 @@ const MeasureMap = require('../../models/MeasurementMap');
 
 // @route:  api/device/post
 // @disc:   Let the osciloscope update the database
-// @access: Should be private but public for know
+// @access: Should be private but public for now
 router.post('/post', (req, res) => {
   const array = req.body.data.split(',').map(Number);
   const correctArray = array.map(d => d - 2300);
